@@ -6,49 +6,69 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 import { login, getMe } from "@/services/auth.service";
-import { getDashboardRoute } from "@/utils/getDashboardRoute";
 import { ILoginPayload } from "@/types/auth";
+import { getDashboardRoute } from "@/utils/getDashboardRoute";
+
 
 interface ApiError {
   success: boolean;
-  statusCode: number;
   message: string;
 }
+
 
 export const useLogin = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
+
   return useMutation({
-    mutationFn: (payload: ILoginPayload) => login(payload),
+    mutationFn: (payload: ILoginPayload) =>
+      login(payload),
+
 
     onSuccess: async () => {
       try {
-        // Clear previous user cache
-        await queryClient.invalidateQueries({
-          queryKey: ["me"],
-        });
 
-        // Get current logged in user
-        const response = await getMe();
+        const currentUser = await getMe();
 
-        // Save user in React Query cache
-        queryClient.setQueryData(["me"], response);
 
-        toast.success("Login successful");
+        queryClient.setQueryData(
+          ["me"],
+          currentUser
+        );
+
+
+        toast.success(
+          "Login successful"
+        );
+
 
         router.push(
-          getDashboardRoute(response.data.role)
+          getDashboardRoute(
+            currentUser.data.role
+          )
         );
+
+
       } catch {
-        toast.error("Failed to load user information.");
+
+        toast.error(
+          "Unable to load user information"
+        );
+
       }
     },
 
-    onError: (error: AxiosError<ApiError>) => {
+
+    onError: (
+      error: AxiosError<ApiError>
+    ) => {
+
       toast.error(
-        error.response?.data?.message ?? "Login failed"
+        error.response?.data?.message ??
+        "Login failed"
       );
+
     },
   });
 };

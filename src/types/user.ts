@@ -11,9 +11,10 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
-  phone: string | null;
-  address: string | null;
-  profileImage: string | null;
+
+  phone?: string | null;
+  address?: string | null;
+  profileImage?: string | null;
 
   role: TUserRole;
   status: TUserStatus;
