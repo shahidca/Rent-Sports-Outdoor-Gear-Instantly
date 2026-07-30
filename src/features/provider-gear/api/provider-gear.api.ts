@@ -64,3 +64,20 @@ export const deleteGear = async (
 
   return data;
 };
+
+interface ProviderGearDetailsResponse {
+  success: boolean;
+  message: string;
+  data: IProviderGear;
+}
+
+export const getProviderGearById = async (
+  id: string
+) => {
+  const { data } =
+    await axiosInstance.get<ProviderGearDetailsResponse>(
+      `/provider/gear/${id}`
+    );
+
+  return data;
+};
