@@ -1,14 +1,10 @@
+import DashboardOverview from "@/features/dashboard/components/DashboardOverview";
+
 export default function DashboardPage() {
   return (
-    <div>
+    <div className="space-y-8">
 
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
-
-      <p className="mt-2 text-muted-foreground">
-        Welcome to GearUp Dashboard.
-      </p>
+      <DashboardOverview />
 
     </div>
   );
