@@ -16,3 +16,36 @@ export const getProfile = async () => {
 
   return data;
 };
+
+export interface IUpdateProfile {
+  name: string;
+  phone?: string;
+  address?: string;
+}
+
+export const updateProfile = async (
+  payload: IUpdateProfile
+) => {
+  const { data } = await axiosInstance.patch(
+    "/customer/profile",
+    payload
+  );
+
+  return data;
+};
+
+export interface IChangePassword {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export const changePassword = async (
+  payload: IChangePassword
+) => {
+  const { data } = await axiosInstance.patch(
+    "/auth/change-password",
+    payload
+  );
+
+  return data;
+};
