@@ -1,71 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+
+import {
+      AlertDialog,
+      AlertDialogAction,
+      AlertDialogCancel,
+      AlertDialogContent,
+      AlertDialogDescription,
+      AlertDialogFooter,
+      AlertDialogHeader,
+      AlertDialogTitle,
+      AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import { useDeleteGear } from "../hooks/useDeleteGear";
 
 interface Props {
-  gearId: string;
+      gearId: string;
 }
 
 export default function DeleteGearDialog({
-  gearId,
+      gearId,
 }: Props) {
-  const [open, setOpen] =
-    useState(false);
+      const { mutate, isPending } =
+            useDeleteGear();
 
-  const { mutate, isPending } =
-    useDeleteGear();
+      return (
+            <AlertDialog>
 
-  const handleDelete = () => {
-    mutate(gearId, {
-      onSuccess: () => {
-        setOpen(false);
-      },
-    });
-  };
+                  <AlertDialogTrigger>
+                        <Button
+                              variant="destructive"
+                              size="sm"
+                        >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                        </Button>
+                  </AlertDialogTrigger>
 
-  if (!open) {
-    return (
-      <Button
-        variant="destructive"
-        onClick={() => setOpen(true)}
-      >
-        Delete
-      </Button>
-    );
-  }
+                  <AlertDialogContent>
 
-  return (
-    <div className="rounded-lg border bg-card p-4 shadow">
+                        <AlertDialogHeader>
 
-      <p className="mb-4 font-medium">
-        Are you sure you want to delete this gear?
-      </p>
+                              <AlertDialogTitle>
 
-      <div className="flex gap-3">
+                                    Delete Gear?
 
-        <Button
-          variant="outline"
-          onClick={() => setOpen(false)}
-        >
-          Cancel
-        </Button>
+                              </AlertDialogTitle>
 
-        <Button
-          variant="destructive"
-          disabled={isPending}
-          onClick={handleDelete}
-        >
-          {isPending
-            ? "Deleting..."
-            : "Delete"}
-        </Button>
+                              <AlertDialogDescription>
 
-      </div>
+                                    This action cannot be undone.
+                                    This will permanently delete this gear
+                                    from your inventory.
 
-    </div>
-  );
+                              </AlertDialogDescription>
+
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+
+                              <AlertDialogCancel>
+
+                                    Cancel
+
+                              </AlertDialogCancel>
+
+                              <AlertDialogAction
+                                    disabled={isPending}
+                                    onClick={() => mutate(gearId)}
+                              >
+                                    {isPending
+                                          ? "Deleting..."
+                                          : "Delete"}
+
+                              </AlertDialogAction>
+
+                        </AlertDialogFooter>
+
+                  </AlertDialogContent>
+
+            </AlertDialog>
+      );
 }
