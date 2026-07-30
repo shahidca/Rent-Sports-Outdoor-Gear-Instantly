@@ -16,3 +16,20 @@ export const createRental = async (
 
   return data;
 };
+
+import { IRental } from "../types/rental";
+
+interface IRentalListResponse {
+  success: boolean;
+  message: string;
+  data: IRental[];
+}
+
+export const getMyRentals = async () => {
+  const { data } =
+    await axiosInstance.get<IRentalListResponse>(
+      "/customer/rentals"
+    );
+
+  return data;
+};

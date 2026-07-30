@@ -23,3 +23,15 @@ export interface IRentalResponse {
     paymentStatus: string;
   };
 }
+
+export interface IRental {
+  id: string;
+  gearName: string;
+  gearImage: string;
+  startDate: string;
+  endDate: string;
+  quantity: number;
+  totalPrice: number;
+  paymentStatus: string;
+  rentalStatus: string;
+}
