@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import DeleteGearDialog from "./DeleteGearDialog";
 import { useProviderGear } from "../hooks/useProviderGear";
 
 export default function GearTable() {
@@ -11,7 +12,11 @@ export default function GearTable() {
   } = useProviderGear();
 
   if (isPending) {
-    return <p>Loading gear...</p>;
+    return (
+      <p className="text-center py-10">
+        Loading gear...
+      </p>
+    );
   }
 
   const gears = data?.data ?? [];
@@ -29,9 +34,9 @@ export default function GearTable() {
 
       <table className="w-full">
 
-        <thead>
+        <thead className="bg-muted">
 
-          <tr className="border-b">
+          <tr>
 
             <th className="p-4 text-left">
               Name
@@ -42,7 +47,7 @@ export default function GearTable() {
             </th>
 
             <th className="p-4 text-left">
-              Price/Day
+              Price / Day
             </th>
 
             <th className="p-4 text-left">
@@ -54,7 +59,7 @@ export default function GearTable() {
             </th>
 
             <th className="p-4 text-left">
-              Action
+              Actions
             </th>
 
           </tr>
@@ -67,7 +72,7 @@ export default function GearTable() {
 
             <tr
               key={gear.id}
-              className="border-b"
+              className="border-t"
             >
 
               <td className="p-4">
@@ -87,18 +92,34 @@ export default function GearTable() {
               </td>
 
               <td className="p-4">
-                {gear.available
-                  ? "Yes"
-                  : "No"}
+                {gear.available ? (
+                  <span className="rounded bg-green-100 px-2 py-1 text-sm text-green-700">
+                    Available
+                  </span>
+                ) : (
+                  <span className="rounded bg-red-100 px-2 py-1 text-sm text-red-700">
+                    Unavailable
+                  </span>
+                )}
               </td>
 
               <td className="p-4">
-                <Link
-                  href={`/dashboard/provider/gear/${gear.id}/edit`}
-                  className="text-primary hover:underline"
-                >
-                  Edit
-                </Link>
+
+                <div className="flex items-center gap-3">
+
+                  <Link
+                    href={`/dashboard/provider/gear/${gear.id}/edit`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Edit
+                  </Link>
+
+                  <DeleteGearDialog
+                    gearId={gear.id}
+                  />
+
+                </div>
+
               </td>
 
             </tr>
