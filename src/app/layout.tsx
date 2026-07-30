@@ -1,6 +1,5 @@
-import QueryProvider from "@/providers/query-provider";
-import { Toaster } from "sonner";
 
+import AuthProvider from "@/providers/AuthProvider";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -9,10 +8,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProvider>
+        <AuthProvider>
           {children}
-          <Toaster richColors position="top-right" />
-        </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

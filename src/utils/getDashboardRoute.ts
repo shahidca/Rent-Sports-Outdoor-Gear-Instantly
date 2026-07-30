@@ -1,16 +1,27 @@
 import { TUserRole } from "@/types/user";
 
+
 export const getDashboardRoute = (
   role: TUserRole
 ) => {
-  switch (role) {
-    case "ADMIN":
-      return "/dashboard/admin";
+
+  switch(role) {
+
+    case "CUSTOMER":
+      return "/dashboard/customer";
+
 
     case "PROVIDER":
       return "/dashboard/provider";
 
+
+    case "ADMIN":
+      return "/dashboard/admin";
+
+
     default:
-      return "/dashboard/customer";
+      return "/auth/login";
+
   }
+
 };
