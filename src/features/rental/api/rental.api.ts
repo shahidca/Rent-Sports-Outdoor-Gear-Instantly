@@ -33,3 +33,20 @@ export const getMyRentals = async () => {
 
   return data;
 };
+
+interface IRentalDetailsResponse {
+  success: boolean;
+  message: string;
+  data: IRental;
+}
+
+export const getRentalById = async (
+  id: string
+) => {
+  const { data } =
+    await axiosInstance.get<IRentalDetailsResponse>(
+      `/customer/rentals/${id}`
+    );
+
+  return data;
+};
