@@ -8,10 +8,27 @@ interface ProviderRentalResponse {
   data: IProviderRental[];
 }
 
-export const getProviderRentals = async () => {
+interface RentalQuery {
+  search?: string;
+  status?: string;
+  page?: number;
+}
+
+export const getProviderRentals = async ({
+  search = "",
+  status = "",
+  page = 1,
+}: RentalQuery) => {
   const { data } =
     await axiosInstance.get<ProviderRentalResponse>(
-      "/provider/rentals"
+      "/provider/rentals",
+      {
+        params: {
+          search,
+          status,
+          page,
+        },
+      }
     );
 
   return data;
