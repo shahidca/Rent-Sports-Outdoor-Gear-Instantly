@@ -1,3 +1,4 @@
+
 import RentalDetails from "@/features/rental/components/RentalDetails";
 
 interface Props {
