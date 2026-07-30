@@ -1,10 +1,12 @@
 export const API = {
   AUTH: "/auth",
-  GEAR: "/gear",
-  RENTALS: "/rentals",
-  PAYMENTS: "/payments",
-  PROVIDER: "/provider",
-  ADMIN: "/admin",
-  REVIEWS: "/reviews",
-  CATEGORIES: "/categories",
+
+  LOGIN: "/auth/login",
+  REGISTER: "/auth/register",
+  LOGOUT: "/auth/logout",
+
+  ME: "/auth/me",
+
+  FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: "/auth/reset-password",
 };
