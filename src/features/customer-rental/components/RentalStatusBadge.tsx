@@ -2,35 +2,36 @@ import { Badge } from "@/components/ui/badge";
 
 interface Props {
   status:
-    | "PENDING"
-    | "APPROVED"
-    | "REJECTED"
+    | "PLACED"
+    | "CONFIRMED"
+    | "PAID"
     | "PICKED_UP"
-    | "RETURNED";
+    | "RETURNED"
+    | "CANCELLED";
 }
 
 export default function RentalStatusBadge({
   status,
 }: Props) {
   switch (status) {
-    case "PENDING":
+    case "PLACED":
       return (
         <Badge variant="secondary">
-          Pending
+          Placed
         </Badge>
       );
 
-    case "APPROVED":
+    case "CONFIRMED":
       return (
         <Badge>
-          Approved
+          Confirmed
         </Badge>
       );
 
-    case "REJECTED":
+    case "PAID":
       return (
-        <Badge variant="destructive">
-          Rejected
+        <Badge>
+          Paid
         </Badge>
       );
 
@@ -45,6 +46,13 @@ export default function RentalStatusBadge({
       return (
         <Badge>
           Returned
+        </Badge>
+      );
+
+    case "CANCELLED":
+      return (
+        <Badge variant="destructive">
+          Cancelled
         </Badge>
       );
 

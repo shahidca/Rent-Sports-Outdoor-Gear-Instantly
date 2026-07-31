@@ -1,5 +1,9 @@
 "use client";
 
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+
 import CancelRentalDialog from "./CancelRentalDialog";
 import PaymentStatusBadge from "./PaymentStatusBadge";
 import RentalDetailsDialog from "./RentalDetailsDialog";
@@ -138,10 +142,23 @@ export default function RentalTable() {
                   />
 
                   {rental.rentalStatus ===
-                    "PENDING" && (
+                    "PLACED" && (
                     <CancelRentalDialog
                       rentalId={rental.id}
                     />
+                  )}
+
+                  {rental.rentalStatus ===
+                    "CONFIRMED" &&
+                    rental.paymentStatus !==
+                      "COMPLETED" && (
+                    <Link
+                      href={`/dashboard/customer/payments/${rental.id}`}
+                    >
+                      <Button size="sm">
+                        Pay Now
+                      </Button>
+                    </Link>
                   )}
 
                 </div>

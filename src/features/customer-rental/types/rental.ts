@@ -12,15 +12,17 @@ export interface ICustomerRental {
   totalPrice: number;
 
   rentalStatus:
-    | "PENDING"
-    | "APPROVED"
-    | "REJECTED"
+    | "PLACED"
+    | "CONFIRMED"
+    | "PAID"
     | "PICKED_UP"
-    | "RETURNED";
+    | "RETURNED"
+    | "CANCELLED";
 
   paymentStatus:
     | "PENDING"
-    | "PAID";
+    | "COMPLETED"
+    | "FAILED";
 
   createdAt: string;
 }
