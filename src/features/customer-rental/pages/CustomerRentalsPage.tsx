@@ -2,6 +2,7 @@
 
 import RentalTable from "../components/RentalTable";
 
+
 export default function CustomerRentalsPage() {
   return (
     <div className="space-y-6">
