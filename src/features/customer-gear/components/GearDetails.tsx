@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
-
 import { useGearDetails } from "../hooks/useGearDetails";
+
+import RentalBookingForm from "@/features/customer-rental/components/RentalBookingForm";
 
 interface Props {
   id: string;
@@ -37,77 +37,101 @@ export default function GearDetails({
   }
 
   return (
-    <section className="mx-auto grid max-w-7xl gap-10 px-4 py-10 md:grid-cols-2">
+    <section className="mx-auto max-w-7xl px-4 py-10">
 
-      <div className="relative aspect-square overflow-hidden rounded-xl border">
+      <div className="grid gap-10 lg:grid-cols-2">
 
-        <Image
-          src={gear.image}
-          alt={gear.name}
-          fill
-          className="object-cover"
-        />
+        {/* Gear Image */}
 
-      </div>
+        <div className="relative aspect-square overflow-hidden rounded-xl border">
 
-      <div className="space-y-5">
-
-        <h1 className="text-4xl font-bold">
-          {gear.name}
-        </h1>
-
-        <p className="text-muted-foreground">
-          {gear.category}
-        </p>
-
-        <div className="text-xl font-semibold text-primary">
-          ৳{gear.pricePerDay} / day
-        </div>
-
-        <div>
-
-          Available :
-
-          <span className="ml-2 font-semibold">
-
-            {gear.available
-              ? "Yes"
-              : "No"}
-
-          </span>
+          <Image
+            src={gear.image}
+            alt={gear.name}
+            fill
+            className="object-cover"
+          />
 
         </div>
 
-        <div>
+        {/* Gear Information */}
 
-          Quantity :
+        <div className="space-y-6">
 
-          <span className="ml-2">
+          <div>
 
-            {gear.quantity}
+            <h1 className="text-4xl font-bold">
+              {gear.name}
+            </h1>
 
-          </span>
+            <p className="mt-2 text-muted-foreground">
+              {gear.category}
+            </p>
+
+          </div>
+
+          <div>
+
+            <span className="text-3xl font-bold text-primary">
+              ৳{gear.pricePerDay}
+            </span>
+
+            <span className="ml-2 text-muted-foreground">
+              / day
+            </span>
+
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+
+            <div className="rounded-lg border p-4">
+
+              <p className="text-sm text-muted-foreground">
+                Availability
+              </p>
+
+              <p className="mt-1 font-semibold">
+                {gear.available
+                  ? "Available"
+                  : "Unavailable"}
+              </p>
+
+            </div>
+
+            <div className="rounded-lg border p-4">
+
+              <p className="text-sm text-muted-foreground">
+                Quantity
+              </p>
+
+              <p className="mt-1 font-semibold">
+                {gear.quantity}
+              </p>
+
+            </div>
+
+          </div>
+
+          <div>
+
+            <h2 className="mb-2 text-xl font-semibold">
+              Description
+            </h2>
+
+            <p className="leading-7 text-muted-foreground">
+              {gear.description}
+            </p>
+
+          </div>
+
+          {/* Booking Form */}
+
+          <RentalBookingForm
+            gearId={gear.id}
+            pricePerDay={gear.pricePerDay}
+          />
 
         </div>
-
-        <div>
-
-          <h2 className="mb-2 text-xl font-semibold">
-            Description
-          </h2>
-
-          <p className="text-muted-foreground">
-            {gear.description}
-          </p>
-
-        </div>
-
-        <Button
-          size="lg"
-          className="w-full md:w-auto"
-        >
-          Rent Now
-        </Button>
 
       </div>
 
