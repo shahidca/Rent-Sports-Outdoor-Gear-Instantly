@@ -46,10 +46,10 @@ export default function RentalBookingForm({
     return Math.max(
       Math.ceil(
         diff /
-          (1000 *
-            60 *
-            60 *
-            24)
+        (1000 *
+          60 *
+          60 *
+          24)
       ) + 1,
       0
     );
@@ -57,10 +57,15 @@ export default function RentalBookingForm({
 
   const handleSubmit = () => {
     mutation.mutate({
-      gearId,
       startDate,
       endDate,
-      notes,
+
+      items: [
+        {
+          gearItemId: gearId,
+          quantity: 1,
+        },
+      ],
     });
   };
 

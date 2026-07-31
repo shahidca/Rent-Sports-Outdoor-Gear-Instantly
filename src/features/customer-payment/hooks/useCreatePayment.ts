@@ -1,29 +1,10 @@
 "use client";
 
-import {
-  useMutation,
-} from "@tanstack/react-query";
-
-import { toast } from "sonner";
-
+import { useMutation } from "@tanstack/react-query";
 import { createPayment } from "../api/payment.api";
 
-export const useCreatePayment =
-  () =>
-    useMutation({
-      mutationFn: createPayment,
-
-      onSuccess: (data) => {
-        toast.success(
-          "Payment created successfully."
-        );
-
-        console.log(data);
-      },
-
-      onError: () => {
-        toast.error(
-          "Payment failed."
-        );
-      },
-    });
+export const useCreatePayment = () => {
+  return useMutation({
+    mutationFn: createPayment,
+  });
+};

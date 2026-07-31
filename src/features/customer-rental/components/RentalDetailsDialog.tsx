@@ -1,5 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
+import { toast } from "sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -10,6 +14,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { useCreatePayment } from "@/features/customer-payment/hooks/useCreatePayment";
+
 import { ICustomerRental } from "../types/rental";
 
 interface Props {
@@ -19,6 +25,31 @@ interface Props {
 export default function RentalDetailsDialog({
   rental,
 }: Props) {
+  const router = useRouter();
+
+  const payment =
+    useCreatePayment();
+
+  const handlePayment = () => {
+    payment.mutate(rental.id, {
+      onSuccess: () => {
+        toast.success(
+          "Payment initialized successfully."
+        );
+
+        router.push(
+          `/dashboard/customer/payments/${rental.id}`
+        );
+      },
+
+      onError: () => {
+        toast.error(
+          "Unable to create payment."
+        );
+      },
+    });
+  };
+
   return (
     <Dialog>
 
@@ -33,7 +64,7 @@ export default function RentalDetailsDialog({
 
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="sm:max-w-lg">
 
         <DialogHeader>
 
@@ -43,7 +74,7 @@ export default function RentalDetailsDialog({
 
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
 
           <div>
 
@@ -75,7 +106,7 @@ export default function RentalDetailsDialog({
               Total Price
             </p>
 
-            <p>
+            <p className="font-semibold">
               ৳{rental.totalPrice}
             </p>
 
@@ -87,7 +118,7 @@ export default function RentalDetailsDialog({
               Rental Status
             </p>
 
-            <p>
+            <p className="font-medium">
               {rental.rentalStatus}
             </p>
 
@@ -99,11 +130,30 @@ export default function RentalDetailsDialog({
               Payment Status
             </p>
 
-            <p>
+            <p className="font-medium">
               {rental.paymentStatus}
             </p>
 
           </div>
+
+          {rental.rentalStatus ===
+            "CONFIRMED" &&
+            rental.paymentStatus !==
+              "COMPLETED" && (
+
+              <Button
+                className="w-full"
+                onClick={handlePayment}
+                disabled={
+                  payment.isPending
+                }
+              >
+                {payment.isPending
+                  ? "Creating Payment..."
+                  : "Pay Now"}
+              </Button>
+
+            )}
 
         </div>
 

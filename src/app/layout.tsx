@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 import QueryProvider from "@/providers/QueryProvider";
 import AuthProvider from "@/providers/AuthProvider";
-import StripeProvider from "@/providers/StripeProvider";
+
 
 import { Toaster } from "sonner";
 
@@ -31,22 +31,14 @@ export default function RootLayout({
       <body>
 
         <QueryProvider>
-
           <AuthProvider>
+            {children}
 
-            <StripeProvider>
-
-              {children}
-
-              <Toaster
-                richColors
-                position="top-right"
-              />
-
-            </StripeProvider>
-
+            <Toaster
+              richColors
+              position="top-right"
+            />
           </AuthProvider>
-
         </QueryProvider>
 
       </body>

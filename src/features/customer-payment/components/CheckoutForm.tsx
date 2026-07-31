@@ -1,14 +1,16 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
-  CardElement,
+  PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 import { confirmPayment } from "../api/payment.api";
 
@@ -18,65 +20,61 @@ interface Props {
 }
 
 export default function CheckoutForm({
-  clientSecret,
   paymentIntentId,
 }: Props) {
   const stripe = useStripe();
 
   const elements = useElements();
 
+  const router = useRouter();
+
   const [loading, setLoading] =
     useState(false);
 
   const handleSubmit = async (
-    e: FormEvent
+    e: React.FormEvent
   ) => {
     e.preventDefault();
 
-    if (!stripe || !elements)
+    if (!stripe || !elements) {
       return;
+    }
 
     setLoading(true);
 
-    const card =
-      elements.getElement(
-        CardElement
-      );
-
-    if (!card) {
-      setLoading(false);
-      return;
-    }
-
     const result =
-      await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: {
-            card,
-          },
-        }
-      );
+      await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+      });
 
     if (result.error) {
-      alert(
-        result.error.message
+      toast.error(
+        result.error.message ??
+        "Payment failed."
       );
 
       setLoading(false);
+
       return;
     }
 
-    if (
-      result.paymentIntent?.status ===
-      "succeeded"
-    ) {
+    try {
       await confirmPayment(
         paymentIntentId
       );
 
-      window.location.href =
-        "/dashboard/customer/payments/success";
+      toast.success(
+        "Payment completed successfully."
+      );
+
+      router.push(
+        "/dashboard/customer/payment/success"
+      );
+    } catch {
+      toast.error(
+        "Payment verification failed."
+      );
     }
 
     setLoading(false);
@@ -87,17 +85,15 @@ export default function CheckoutForm({
       onSubmit={handleSubmit}
       className="space-y-6"
     >
-      <div className="rounded-lg border p-4">
-
-        <CardElement />
-
-      </div>
+      <PaymentElement />
 
       <Button
+        type="submit"
         className="w-full"
         disabled={
-          loading ||
-          !stripe
+          !stripe ||
+          !elements ||
+          loading
         }
       >
         {loading

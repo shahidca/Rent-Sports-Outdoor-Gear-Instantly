@@ -2,8 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 import CheckoutForm from "../components/CheckoutForm";
 import { createPayment } from "../api/payment.api";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 interface Props {
   rentalOrderId: string;
@@ -37,6 +44,8 @@ export default function PaymentPage({
           setPayment(
             response.data
           );
+        } catch (error) {
+          console.error(error);
         } finally {
           setLoading(false);
         }
@@ -64,18 +73,26 @@ export default function PaymentPage({
   return (
     <div className="mx-auto max-w-lg rounded-xl border p-6">
 
-      <h2 className="mb-6 text-2xl font-bold">
+      <h1 className="mb-6 text-2xl font-bold">
         Complete Payment
-      </h2>
+      </h1>
 
-      <CheckoutForm
-        clientSecret={
-          payment.clientSecret
-        }
-        paymentIntentId={
-          payment.paymentIntentId
-        }
-      />
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret:
+            payment.clientSecret,
+        }}
+      >
+        <CheckoutForm
+          paymentIntentId={
+            payment.paymentIntentId
+          }
+          clientSecret={
+            payment.clientSecret
+          }
+        />
+      </Elements>
 
     </div>
   );

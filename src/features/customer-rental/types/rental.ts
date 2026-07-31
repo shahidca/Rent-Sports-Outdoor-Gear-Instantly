@@ -1,14 +1,10 @@
 export interface ICustomerRental {
   id: string;
-
+  rentalOrderId: string; 
   gearName: string;
-
   gearImage: string;
-
   startDate: string;
-
   endDate: string;
-
   totalPrice: number;
 
   rentalStatus:
@@ -23,6 +19,4 @@ export interface ICustomerRental {
     | "PENDING"
     | "COMPLETED"
     | "FAILED";
-
-  createdAt: string;
 }
