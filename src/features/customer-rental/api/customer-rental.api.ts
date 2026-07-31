@@ -28,3 +28,14 @@ export const getCustomerRentals =
 
     return data;
   };
+
+  export const cancelRental = async (
+  rentalId: string
+) => {
+  const { data } =
+    await axiosInstance.patch(
+      `/rentals/${rentalId}/cancel`
+    );
+
+  return data;
+};

@@ -5,8 +5,9 @@ import AuthProvider from "@/providers/AuthProvider";
 import { Toaster } from "sonner";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import StripeProvider from "@/providers/StripeProvider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 
 export default function RootLayout({
@@ -17,15 +18,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body>
-        <QueryProvider>
-          <AuthProvider>
-            {children}
-            <Toaster
-              richColors
-              position="top-right"
-            />
-          </AuthProvider>
-        </QueryProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <StripeProvider>
+              {children}
+              <Toaster
+                richColors
+                position="top-right"
+              />
+            </StripeProvider>
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

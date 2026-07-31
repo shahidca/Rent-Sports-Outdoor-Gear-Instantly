@@ -1,151 +1,161 @@
 "use client";
 
+import CancelRentalDialog from "./CancelRentalDialog";
 import PaymentStatusBadge from "./PaymentStatusBadge";
-import RentalStatusBadge from "./RentalStatusBadge";
 import RentalDetailsDialog from "./RentalDetailsDialog";
+import RentalStatusBadge from "./RentalStatusBadge";
+
 import { useCustomerRentals } from "../hooks/useCustomerRentals";
+import { ICustomerRental } from "../types/rental";
 
 export default function RentalTable() {
-      const {
-            data,
-            isPending,
-      } = useCustomerRentals();
+  const {
+    data,
+    isPending,
+  } = useCustomerRentals();
 
-      if (isPending) {
-            return (
-                  <p className="py-10 text-center">
-                        Loading rentals...
-                  </p>
-            );
-      }
+  if (isPending) {
+    return (
+      <p className="py-10 text-center">
+        Loading rentals...
+      </p>
+    );
+  }
 
-      const rentals =
-            data?.data ?? [];
+  const rentals: ICustomerRental[] =
+    data?.data ?? [];
 
-      if (!rentals.length) {
-            return (
-                  <div className="rounded-xl border p-10 text-center">
-                        No rentals found.
-                  </div>
-            );
-      }
+  if (!rentals.length) {
+    return (
+      <div className="rounded-xl border p-10 text-center">
+        No rentals found.
+      </div>
+    );
+  }
 
-      return (
-            <div className="overflow-x-auto rounded-xl border">
+  return (
+    <div className="overflow-x-auto rounded-xl border">
 
-                  <table className="w-full">
+      <table className="w-full">
 
-                        <thead className="bg-muted">
+        <thead className="bg-muted">
 
-                              <tr>
+          <tr>
 
-                                    <th className="p-4 text-left">
-                                          Gear
-                                    </th>
+            <th className="p-4 text-left">
+              Gear
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          Start
-                                    </th>
+            <th className="p-4 text-left">
+              Start
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          End
-                                    </th>
+            <th className="p-4 text-left">
+              End
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          Total
-                                    </th>
+            <th className="p-4 text-left">
+              Total
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          Rental
-                                    </th>
+            <th className="p-4 text-left">
+              Rental
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          Payment
-                                    </th>
+            <th className="p-4 text-left">
+              Payment
+            </th>
 
-                                    <th className="p-4 text-left">
-                                          Action
-                                    </th>
+            <th className="p-4 text-left">
+              Action
+            </th>
 
-                              </tr>
+          </tr>
 
-                        </thead>
+        </thead>
 
-                        <tbody>
+        <tbody>
 
-                              {rentals.map((rental) => (
+          {rentals.map((rental) => (
 
-                                    <tr
-                                          key={rental.id}
-                                          className="border-t"
-                                    >
+            <tr
+              key={rental.id}
+              className="border-t"
+            >
 
-                                          <td className="p-4">
+              <td className="p-4">
 
-                                                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
 
-                                                      <img
-                                                            src={rental.gearImage}
-                                                            alt={rental.gearName}
-                                                            className="h-14 w-14 rounded-lg object-cover"
-                                                      />
+                  <img
+                    src={rental.gearImage}
+                    alt={rental.gearName}
+                    className="h-14 w-14 rounded-lg object-cover"
+                  />
 
-                                                      <span className="font-medium">
-                                                            {rental.gearName}
-                                                      </span>
+                  <span className="font-medium">
+                    {rental.gearName}
+                  </span>
 
-                                                </div>
+                </div>
 
-                                          </td>
+              </td>
 
-                                          <td className="p-4">
-                                                {rental.startDate}
-                                          </td>
+              <td className="p-4">
+                {rental.startDate}
+              </td>
 
-                                          <td className="p-4">
-                                                {rental.endDate}
-                                          </td>
+              <td className="p-4">
+                {rental.endDate}
+              </td>
 
-                                          <td className="p-4">
-                                                ৳{rental.totalPrice}
-                                          </td>
+              <td className="p-4">
+                ৳{rental.totalPrice}
+              </td>
 
-                                          <td className="p-4">
+              <td className="p-4">
 
-                                                <RentalStatusBadge
-                                                      status={
-                                                            rental.rentalStatus
-                                                      }
-                                                />
+                <RentalStatusBadge
+                  status={rental.rentalStatus}
+                />
 
-                                          </td>
+              </td>
 
-                                          <td className="p-4">
+              <td className="p-4">
 
-                                                <PaymentStatusBadge
-                                                      status={
-                                                            rental.paymentStatus
-                                                      }
-                                                />
+                <PaymentStatusBadge
+                  status={rental.paymentStatus}
+                />
 
-                                          </td>
+              </td>
 
-                                          <td className="p-4">
+              <td className="p-4">
 
-                                                <RentalDetailsDialog
-                                                      rental={rental}
-                                                />
+                <div className="flex flex-wrap gap-2">
 
-                                          </td>
+                  <RentalDetailsDialog
+                    rental={rental}
+                  />
 
-                                    </tr>
+                  {rental.rentalStatus ===
+                    "PENDING" && (
+                    <CancelRentalDialog
+                      rentalId={rental.id}
+                    />
+                  )}
 
-                              ))}
+                </div>
 
-                        </tbody>
+              </td>
 
-                  </table>
+            </tr>
 
-            </div>
-      );
+          ))}
+
+        </tbody>
+
+      </table>
+
+    </div>
+  );
 }
