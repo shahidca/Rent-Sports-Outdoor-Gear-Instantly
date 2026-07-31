@@ -3,6 +3,9 @@
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 import RentalSummary from "./RentalSummary";
 
@@ -10,7 +13,6 @@ import { useCreateRental } from "../hooks/useCreateRental";
 
 interface Props {
   gearId: string;
-
   pricePerDay: number;
 }
 
@@ -18,8 +20,7 @@ export default function RentalBookingForm({
   gearId,
   pricePerDay,
 }: Props) {
-  const mutation =
-    useCreateRental();
+  const mutation = useCreateRental();
 
   const [startDate, setStartDate] =
     useState("");
@@ -30,32 +31,29 @@ export default function RentalBookingForm({
   const [notes, setNotes] =
     useState("");
 
-  const totalDays =
-    useMemo(() => {
-      if (!startDate || !endDate)
-        return 0;
+  const totalDays = useMemo(() => {
+    if (!startDate || !endDate) {
+      return 0;
+    }
 
-      const start =
-        new Date(startDate);
+    const start = new Date(startDate);
 
-      const end =
-        new Date(endDate);
+    const end = new Date(endDate);
 
-      const diff =
-        end.getTime() -
-        start.getTime();
+    const diff =
+      end.getTime() - start.getTime();
 
-      return Math.max(
-        Math.ceil(
-          diff /
-            (1000 *
-              60 *
-              60 *
-              24)
-        ) + 1,
-        0
-      );
-    }, [startDate, endDate]);
+    return Math.max(
+      Math.ceil(
+        diff /
+          (1000 *
+            60 *
+            60 *
+            24)
+      ) + 1,
+      0
+    );
+  }, [startDate, endDate]);
 
   const handleSubmit = () => {
     mutation.mutate({
@@ -67,17 +65,17 @@ export default function RentalBookingForm({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rounded-xl border p-6">
 
       <div>
 
-        <label className="mb-2 block font-medium">
+        <Label htmlFor="startDate">
           Start Date
-        </label>
+        </Label>
 
-        <input
+        <Input
+          id="startDate"
           type="date"
-          className="w-full rounded-md border p-2"
           value={startDate}
           onChange={(e) =>
             setStartDate(
@@ -90,13 +88,13 @@ export default function RentalBookingForm({
 
       <div>
 
-        <label className="mb-2 block font-medium">
+        <Label htmlFor="endDate">
           End Date
-        </label>
+        </Label>
 
-        <input
+        <Input
+          id="endDate"
           type="date"
-          className="w-full rounded-md border p-2"
           value={endDate}
           onChange={(e) =>
             setEndDate(
@@ -109,13 +107,14 @@ export default function RentalBookingForm({
 
       <div>
 
-        <label className="mb-2 block font-medium">
+        <Label htmlFor="notes">
           Notes
-        </label>
+        </Label>
 
-        <textarea
+        <Textarea
+          id="notes"
           rows={4}
-          className="w-full rounded-md border p-2"
+          placeholder="Any special instructions..."
           value={notes}
           onChange={(e) =>
             setNotes(

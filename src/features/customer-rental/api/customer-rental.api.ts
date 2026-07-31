@@ -1,9 +1,14 @@
 import axiosInstance from "@/lib/axios";
 
-import { ICreateRentalPayload } from "../types/rental";
+export interface CreateRentalPayload {
+  gearId: string;
+  startDate: string;
+  endDate: string;
+  notes?: string;
+}
 
 export const createRental = async (
-  payload: ICreateRentalPayload
+  payload: CreateRentalPayload
 ) => {
   const { data } =
     await axiosInstance.post(
@@ -13,3 +18,13 @@ export const createRental = async (
 
   return data;
 };
+
+export const getCustomerRentals =
+  async () => {
+    const { data } =
+      await axiosInstance.get(
+        "/rentals/my-rentals"
+      );
+
+    return data;
+  };

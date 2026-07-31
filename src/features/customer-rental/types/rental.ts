@@ -1,9 +1,26 @@
-export interface ICreateRentalPayload {
-  gearId: string;
+export interface ICustomerRental {
+  id: string;
+
+  gearName: string;
+
+  gearImage: string;
 
   startDate: string;
 
   endDate: string;
 
-  notes?: string;
+  totalPrice: number;
+
+  rentalStatus:
+    | "PENDING"
+    | "APPROVED"
+    | "REJECTED"
+    | "PICKED_UP"
+    | "RETURNED";
+
+  paymentStatus:
+    | "PENDING"
+    | "PAID";
+
+  createdAt: string;
 }
