@@ -1,6 +1,4 @@
-
-
-import GearDetails from "@/features/gear/components/GearDetails";
+import GearDetails from "@/features/customer-gear/components/GearDetails";
 
 interface Props {
   params: Promise<{
@@ -14,8 +12,8 @@ export default async function GearDetailsPage({
   const { id } = await params;
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <GearDetails id={id} />
-    </main>
+    <GearDetails
+      id={id}
+    />
   );
 }

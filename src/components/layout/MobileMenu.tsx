@@ -1,145 +1,107 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-
 import { useAuthContext } from "@/providers/AuthProvider";
 
-
-const navItems = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "Gear",
-    href: "/gear",
-  },
-];
-
-
 export default function MobileMenu() {
+  const pathname = usePathname();
+
+  const { user } = useAuthContext();
 
   const [open, setOpen] = useState(false);
 
-  const {
-    user,
-  } = useAuthContext();
-
+  const closeMenu = () => {
+    setOpen(false);
+  };
 
   return (
-    <div className="md:hidden">
-
+    <div className="relative md:hidden">
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((prev) => !prev)}
       >
-
-        {
-          open ? (
-            <X />
-          ) : (
-            <Menu />
-          )
-        }
-
+        {open ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Menu className="h-6 w-6" />
+        )}
       </Button>
 
+      {open && (
+        <div className="absolute right-0 top-14 z-50 w-64 rounded-lg border bg-background p-4 shadow-lg">
 
+          <nav className="flex flex-col gap-2">
 
-      {
-        open && (
-
-          <div className="absolute left-0 top-16 w-full border-b bg-background p-4 shadow-md">
-
-
-            <nav className="flex flex-col gap-4">
-
-
-              {
-                navItems.map((item) => (
-
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-medium"
-                  >
-                    {item.name}
-                  </Link>
-
-                ))
+            <Link
+              href="/"
+              onClick={closeMenu}
+              className={
+                pathname === "/"
+                  ? "rounded-md bg-primary px-3 py-2 text-primary-foreground"
+                  : "rounded-md px-3 py-2 hover:bg-muted"
               }
+            >
+              Home
+            </Link>
 
-
-
-
-              {
-                user ? (
-
-                  <Link
-                    href="/dashboard/customer"
-                    onClick={() => setOpen(false)}
-                  >
-
-                    <Button className="w-full">
-                      Dashboard
-                    </Button>
-
-                  </Link>
-
-                ) : (
-
-                  <div className="flex flex-col gap-2">
-
-
-                    <Link
-                      href="/auth/login"
-                      onClick={() => setOpen(false)}
-                    >
-
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                      >
-                        Login
-                      </Button>
-
-                    </Link>
-
-
-
-                    <Link
-                      href="/auth/register"
-                      onClick={() => setOpen(false)}
-                    >
-
-                      <Button className="w-full">
-                        Register
-                      </Button>
-
-                    </Link>
-
-
-                  </div>
-
-                )
+            <Link
+              href="/gear"
+              onClick={closeMenu}
+              className={
+                pathname === "/gear"
+                  ? "rounded-md bg-primary px-3 py-2 text-primary-foreground"
+                  : "rounded-md px-3 py-2 hover:bg-muted"
               }
+            >
+              Browse Gear
+            </Link>
 
+            <hr className="my-2" />
 
-            </nav>
+            {user ? (
+              <Link
+                href="/dashboard"
+                onClick={closeMenu}
+              >
+                <Button className="w-full">
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  onClick={closeMenu}
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Login
+                  </Button>
+                </Link>
 
+                <Link
+                  href="/auth/register"
+                  onClick={closeMenu}
+                >
+                  <Button className="mt-3 w-full">
+                    Register
+                  </Button>
+                </Link>
+              </>
+            )}
 
-          </div>
+          </nav>
 
-        )
-      }
-
-
+        </div>
+      )}
     </div>
   );
 }
